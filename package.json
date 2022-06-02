@@ -11,8 +11,7 @@
   "devDependencies": {
     "babel": "^5.8.21",
     "browserify": "^10.2.4",
-    "mocha": "^2.3.4",
-    "xyz": "0.5.x"
+    "mocha": "^2.3.4"
   },
   "scripts": {
     "build": "browserify -s unionType ./union-type.js -o dist/union-type.js",
