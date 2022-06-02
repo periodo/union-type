@@ -15,7 +15,7 @@
   },
   "scripts": {
     "build": "browserify -s unionType ./union-type.js -o dist/union-type.js",
-    "test": "mocha --compilers js:babel/register"
+    "test": "mocha --require babel/register"
   },
   "repository": {
     "type": "git",
