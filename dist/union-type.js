@@ -1,8 +1,11 @@
-(function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.unionType = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-var _arity = require('./internal/_arity');
-var _curry2 = require('./internal/_curry2');
+(function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.unionType = f()}})(function(){var define,module,exports;return (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
+var _arity =
+/*#__PURE__*/
+require("./internal/_arity.js");
 
-
+var _curry2 =
+/*#__PURE__*/
+require("./internal/_curry2.js");
 /**
  * Creates a function that is bound to a context.
  * Note: `R.bind` does not provide the additional argument-binding capabilities of
@@ -20,25 +23,33 @@ var _curry2 = require('./internal/_curry2');
  * @see R.partial
  * @example
  *
- *      var log = R.bind(console.log, console);
+ *      const log = R.bind(console.log, console);
  *      R.pipe(R.assoc('a', 2), R.tap(log), R.assoc('a', 3))({a: 1}); //=> {a: 3}
  *      // logs {a: 2}
  * @symb R.bind(f, o)(a, b) = f.call(o, a, b)
  */
-module.exports = _curry2(function bind(fn, thisObj) {
-  return _arity(fn.length, function() {
+
+
+var bind =
+/*#__PURE__*/
+_curry2(function bind(fn, thisObj) {
+  return _arity(fn.length, function () {
     return fn.apply(thisObj, arguments);
   });
 });
 
-},{"./internal/_arity":7,"./internal/_curry2":12}],2:[function(require,module,exports){
-var pipe = require('./pipe');
-var reverse = require('./reverse');
+module.exports = bind;
+},{"./internal/_arity.js":7,"./internal/_curry2.js":11}],2:[function(require,module,exports){
+var pipe =
+/*#__PURE__*/
+require("./pipe.js");
 
-
+var reverse =
+/*#__PURE__*/
+require("./reverse.js");
 /**
- * Performs right-to-left function composition. The rightmost function may have
- * any arity; the remaining functions must be unary.
+ * Performs right-to-left function composition. The last argument may have
+ * any arity; the remaining arguments must be unary.
  *
  * **Note:** The result of compose is not automatically curried.
  *
@@ -52,28 +63,42 @@ var reverse = require('./reverse');
  * @see R.pipe
  * @example
  *
- *      var classyGreeting = (firstName, lastName) => "The name's " + lastName + ", " + firstName + " " + lastName
- *      var yellGreeting = R.compose(R.toUpper, classyGreeting);
+ *      const classyGreeting = (firstName, lastName) => "The name's " + lastName + ", " + firstName + " " + lastName
+ *      const yellGreeting = R.compose(R.toUpper, classyGreeting);
  *      yellGreeting('James', 'Bond'); //=> "THE NAME'S BOND, JAMES BOND"
  *
  *      R.compose(Math.abs, R.add(1), R.multiply(2))(-4) //=> 7
  *
  * @symb R.compose(f, g, h)(a, b) = f(g(h(a, b)))
+ * @symb R.compose(f, g, h)(a)(b) = f(g(h(a)))(b)
  */
-module.exports = function compose() {
+
+
+function compose() {
   if (arguments.length === 0) {
     throw new Error('compose requires at least one argument');
   }
+
   return pipe.apply(this, reverse(arguments));
-};
+}
 
-},{"./pipe":28,"./reverse":30}],3:[function(require,module,exports){
-var _arity = require('./internal/_arity');
-var _curry1 = require('./internal/_curry1');
-var _curry2 = require('./internal/_curry2');
-var _curryN = require('./internal/_curryN');
+module.exports = compose;
+},{"./pipe.js":30,"./reverse.js":32}],3:[function(require,module,exports){
+var _arity =
+/*#__PURE__*/
+require("./internal/_arity.js");
 
+var _curry1 =
+/*#__PURE__*/
+require("./internal/_curry1.js");
 
+var _curry2 =
+/*#__PURE__*/
+require("./internal/_curry2.js");
+
+var _curryN =
+/*#__PURE__*/
+require("./internal/_curryN.js");
 /**
  * Returns a curried equivalent of the provided function, with the specified
  * arity. The curried function has two unusual capabilities. First, its
@@ -109,25 +134,34 @@ var _curryN = require('./internal/_curryN');
  * @see R.curry
  * @example
  *
- *      var sumArgs = (...args) => R.sum(args);
+ *      const sumArgs = (...args) => R.sum(args);
  *
- *      var curriedAddFourNumbers = R.curryN(4, sumArgs);
- *      var f = curriedAddFourNumbers(1, 2);
- *      var g = f(3);
+ *      const curriedAddFourNumbers = R.curryN(4, sumArgs);
+ *      const f = curriedAddFourNumbers(1, 2);
+ *      const g = f(3);
  *      g(4); //=> 10
  */
-module.exports = _curry2(function curryN(length, fn) {
+
+
+var curryN =
+/*#__PURE__*/
+_curry2(function curryN(length, fn) {
   if (length === 1) {
     return _curry1(fn);
   }
+
   return _arity(length, _curryN(length, [], fn));
 });
 
-},{"./internal/_arity":7,"./internal/_curry1":11,"./internal/_curry2":12,"./internal/_curryN":14}],4:[function(require,module,exports){
-var _contains = require('./internal/_contains');
-var _curry2 = require('./internal/_curry2');
+module.exports = curryN;
+},{"./internal/_arity.js":7,"./internal/_curry1.js":10,"./internal/_curry2.js":11,"./internal/_curryN.js":13}],4:[function(require,module,exports){
+var _curry2 =
+/*#__PURE__*/
+require("./internal/_curry2.js");
 
-
+var _Set =
+/*#__PURE__*/
+require("./internal/_Set.js");
 /**
  * Finds the set (i.e. no duplicates) of all elements in the first list not
  * contained in the second list. Objects and Arrays are compared in terms of
@@ -148,24 +182,41 @@ var _curry2 = require('./internal/_curry2');
  *      R.difference([7,6,5,4,3], [1,2,3,4]); //=> [7,6,5]
  *      R.difference([{a: 1}, {b: 2}], [{a: 1}, {c: 3}]) //=> [{b: 2}]
  */
-module.exports = _curry2(function difference(first, second) {
+
+
+var difference =
+/*#__PURE__*/
+_curry2(function difference(first, second) {
   var out = [];
   var idx = 0;
   var firstLen = first.length;
+  var secondLen = second.length;
+  var toFilterOut = new _Set();
+
+  for (var i = 0; i < secondLen; i += 1) {
+    toFilterOut.add(second[i]);
+  }
+
   while (idx < firstLen) {
-    if (!_contains(first[idx], second) && !_contains(first[idx], out)) {
+    if (toFilterOut.add(first[idx])) {
       out[out.length] = first[idx];
     }
+
     idx += 1;
   }
+
   return out;
 });
 
-},{"./internal/_contains":10,"./internal/_curry2":12}],5:[function(require,module,exports){
-var _curry2 = require('./internal/_curry2');
-var _equals = require('./internal/_equals');
+module.exports = difference;
+},{"./internal/_Set.js":6,"./internal/_curry2.js":11}],5:[function(require,module,exports){
+var _curry2 =
+/*#__PURE__*/
+require("./internal/_curry2.js");
 
-
+var _equals =
+/*#__PURE__*/
+require("./internal/_equals.js");
 /**
  * Returns `true` if its arguments are equivalent, `false` otherwise. Handles
  * cyclical data structures.
@@ -187,120 +238,335 @@ var _equals = require('./internal/_equals');
  *      R.equals(1, '1'); //=> false
  *      R.equals([1, 2, 3], [1, 2, 3]); //=> true
  *
- *      var a = {}; a.v = a;
- *      var b = {}; b.v = b;
+ *      const a = {}; a.v = a;
+ *      const b = {}; b.v = b;
  *      R.equals(a, b); //=> true
  */
-module.exports = _curry2(function equals(a, b) {
+
+
+var equals =
+/*#__PURE__*/
+_curry2(function equals(a, b) {
   return _equals(a, b, [], []);
 });
 
-},{"./internal/_curry2":12,"./internal/_equals":15}],6:[function(require,module,exports){
-var _curry2 = require('./internal/_curry2');
+module.exports = equals;
+},{"./internal/_curry2.js":11,"./internal/_equals.js":14}],6:[function(require,module,exports){
+var _includes =
+/*#__PURE__*/
+require("./_includes.js");
 
-
-/**
- * Returns true if its arguments are identical, false otherwise. Values are
- * identical if they reference the same memory. `NaN` is identical to `NaN`;
- * `0` and `-0` are not identical.
- *
- * @func
- * @memberOf R
- * @since v0.15.0
- * @category Relation
- * @sig a -> a -> Boolean
- * @param {*} a
- * @param {*} b
- * @return {Boolean}
- * @example
- *
- *      var o = {};
- *      R.identical(o, o); //=> true
- *      R.identical(1, 1); //=> true
- *      R.identical(1, '1'); //=> false
- *      R.identical([], []); //=> false
- *      R.identical(0, -0); //=> false
- *      R.identical(NaN, NaN); //=> true
- */
-module.exports = _curry2(function identical(a, b) {
-  // SameValue algorithm
-  if (a === b) { // Steps 1-5, 7-10
-    // Steps 6.b-6.e: +0 != -0
-    return a !== 0 || 1 / a === 1 / b;
-  } else {
-    // Step 6.a: NaN == NaN
-    return a !== a && b !== b;
+var _Set =
+/*#__PURE__*/
+function () {
+  function _Set() {
+    /* globals Set */
+    this._nativeSet = typeof Set === 'function' ? new Set() : null;
+    this._items = {};
   }
-});
 
-},{"./internal/_curry2":12}],7:[function(require,module,exports){
-module.exports = function _arity(n, fn) {
+  // until we figure out why jsdoc chokes on this
+  // @param item The item to add to the Set
+  // @returns {boolean} true if the item did not exist prior, otherwise false
+  //
+  _Set.prototype.add = function (item) {
+    return !hasOrAdd(item, true, this);
+  }; //
+  // @param item The item to check for existence in the Set
+  // @returns {boolean} true if the item exists in the Set, otherwise false
+  //
+
+
+  _Set.prototype.has = function (item) {
+    return hasOrAdd(item, false, this);
+  }; //
+  // Combines the logic for checking whether an item is a member of the set and
+  // for adding a new item to the set.
+  //
+  // @param item       The item to check or add to the Set instance.
+  // @param shouldAdd  If true, the item will be added to the set if it doesn't
+  //                   already exist.
+  // @param set        The set instance to check or add to.
+  // @return {boolean} true if the item already existed, otherwise false.
+  //
+
+
+  return _Set;
+}();
+
+function hasOrAdd(item, shouldAdd, set) {
+  var type = typeof item;
+  var prevSize, newSize;
+
+  switch (type) {
+    case 'string':
+    case 'number':
+      // distinguish between +0 and -0
+      if (item === 0 && 1 / item === -Infinity) {
+        if (set._items['-0']) {
+          return true;
+        } else {
+          if (shouldAdd) {
+            set._items['-0'] = true;
+          }
+
+          return false;
+        }
+      } // these types can all utilise the native Set
+
+
+      if (set._nativeSet !== null) {
+        if (shouldAdd) {
+          prevSize = set._nativeSet.size;
+
+          set._nativeSet.add(item);
+
+          newSize = set._nativeSet.size;
+          return newSize === prevSize;
+        } else {
+          return set._nativeSet.has(item);
+        }
+      } else {
+        if (!(type in set._items)) {
+          if (shouldAdd) {
+            set._items[type] = {};
+            set._items[type][item] = true;
+          }
+
+          return false;
+        } else if (item in set._items[type]) {
+          return true;
+        } else {
+          if (shouldAdd) {
+            set._items[type][item] = true;
+          }
+
+          return false;
+        }
+      }
+
+    case 'boolean':
+      // set._items['boolean'] holds a two element array
+      // representing [ falseExists, trueExists ]
+      if (type in set._items) {
+        var bIdx = item ? 1 : 0;
+
+        if (set._items[type][bIdx]) {
+          return true;
+        } else {
+          if (shouldAdd) {
+            set._items[type][bIdx] = true;
+          }
+
+          return false;
+        }
+      } else {
+        if (shouldAdd) {
+          set._items[type] = item ? [false, true] : [true, false];
+        }
+
+        return false;
+      }
+
+    case 'function':
+      // compare functions for reference equality
+      if (set._nativeSet !== null) {
+        if (shouldAdd) {
+          prevSize = set._nativeSet.size;
+
+          set._nativeSet.add(item);
+
+          newSize = set._nativeSet.size;
+          return newSize === prevSize;
+        } else {
+          return set._nativeSet.has(item);
+        }
+      } else {
+        if (!(type in set._items)) {
+          if (shouldAdd) {
+            set._items[type] = [item];
+          }
+
+          return false;
+        }
+
+        if (!_includes(item, set._items[type])) {
+          if (shouldAdd) {
+            set._items[type].push(item);
+          }
+
+          return false;
+        }
+
+        return true;
+      }
+
+    case 'undefined':
+      if (set._items[type]) {
+        return true;
+      } else {
+        if (shouldAdd) {
+          set._items[type] = true;
+        }
+
+        return false;
+      }
+
+    case 'object':
+      if (item === null) {
+        if (!set._items['null']) {
+          if (shouldAdd) {
+            set._items['null'] = true;
+          }
+
+          return false;
+        }
+
+        return true;
+      }
+
+    /* falls through */
+
+    default:
+      // reduce the search size of heterogeneous sets by creating buckets
+      // for each type.
+      type = Object.prototype.toString.call(item);
+
+      if (!(type in set._items)) {
+        if (shouldAdd) {
+          set._items[type] = [item];
+        }
+
+        return false;
+      } // scan through all previously applied items
+
+
+      if (!_includes(item, set._items[type])) {
+        if (shouldAdd) {
+          set._items[type].push(item);
+        }
+
+        return false;
+      }
+
+      return true;
+  }
+} // A simple Set type that honours R.equals semantics
+
+
+module.exports = _Set;
+},{"./_includes.js":17}],7:[function(require,module,exports){
+function _arity(n, fn) {
   /* eslint-disable no-unused-vars */
   switch (n) {
-    case 0: return function() { return fn.apply(this, arguments); };
-    case 1: return function(a0) { return fn.apply(this, arguments); };
-    case 2: return function(a0, a1) { return fn.apply(this, arguments); };
-    case 3: return function(a0, a1, a2) { return fn.apply(this, arguments); };
-    case 4: return function(a0, a1, a2, a3) { return fn.apply(this, arguments); };
-    case 5: return function(a0, a1, a2, a3, a4) { return fn.apply(this, arguments); };
-    case 6: return function(a0, a1, a2, a3, a4, a5) { return fn.apply(this, arguments); };
-    case 7: return function(a0, a1, a2, a3, a4, a5, a6) { return fn.apply(this, arguments); };
-    case 8: return function(a0, a1, a2, a3, a4, a5, a6, a7) { return fn.apply(this, arguments); };
-    case 9: return function(a0, a1, a2, a3, a4, a5, a6, a7, a8) { return fn.apply(this, arguments); };
-    case 10: return function(a0, a1, a2, a3, a4, a5, a6, a7, a8, a9) { return fn.apply(this, arguments); };
-    default: throw new Error('First argument to _arity must be a non-negative integer no greater than ten');
-  }
-};
+    case 0:
+      return function () {
+        return fn.apply(this, arguments);
+      };
 
+    case 1:
+      return function (a0) {
+        return fn.apply(this, arguments);
+      };
+
+    case 2:
+      return function (a0, a1) {
+        return fn.apply(this, arguments);
+      };
+
+    case 3:
+      return function (a0, a1, a2) {
+        return fn.apply(this, arguments);
+      };
+
+    case 4:
+      return function (a0, a1, a2, a3) {
+        return fn.apply(this, arguments);
+      };
+
+    case 5:
+      return function (a0, a1, a2, a3, a4) {
+        return fn.apply(this, arguments);
+      };
+
+    case 6:
+      return function (a0, a1, a2, a3, a4, a5) {
+        return fn.apply(this, arguments);
+      };
+
+    case 7:
+      return function (a0, a1, a2, a3, a4, a5, a6) {
+        return fn.apply(this, arguments);
+      };
+
+    case 8:
+      return function (a0, a1, a2, a3, a4, a5, a6, a7) {
+        return fn.apply(this, arguments);
+      };
+
+    case 9:
+      return function (a0, a1, a2, a3, a4, a5, a6, a7, a8) {
+        return fn.apply(this, arguments);
+      };
+
+    case 10:
+      return function (a0, a1, a2, a3, a4, a5, a6, a7, a8, a9) {
+        return fn.apply(this, arguments);
+      };
+
+    default:
+      throw new Error('First argument to _arity must be a non-negative integer no greater than ten');
+  }
+}
+
+module.exports = _arity;
 },{}],8:[function(require,module,exports){
-module.exports = function _arrayFromIterator(iter) {
+function _arrayFromIterator(iter) {
   var list = [];
   var next;
+
   while (!(next = iter.next()).done) {
     list.push(next.value);
   }
+
   return list;
-};
+}
 
+module.exports = _arrayFromIterator;
 },{}],9:[function(require,module,exports){
-var _isArray = require('./_isArray');
-
-
+var _isArray =
+/*#__PURE__*/
+require("./_isArray.js");
 /**
  * This checks whether a function has a [methodname] function. If it isn't an
  * array it will execute that function otherwise it will default to the ramda
  * implementation.
  *
  * @private
- * @param {Function} fn ramda implemtation
+ * @param {Function} fn ramda implementation
  * @param {String} methodname property to check for a custom implementation
  * @return {Object} Whatever the return value of the method is.
  */
-module.exports = function _checkForMethod(methodname, fn) {
-  return function() {
+
+
+function _checkForMethod(methodname, fn) {
+  return function () {
     var length = arguments.length;
+
     if (length === 0) {
       return fn();
     }
+
     var obj = arguments[length - 1];
-    return (_isArray(obj) || typeof obj[methodname] !== 'function') ?
-      fn.apply(this, arguments) :
-      obj[methodname].apply(obj, Array.prototype.slice.call(arguments, 0, length - 1));
+    return _isArray(obj) || typeof obj[methodname] !== 'function' ? fn.apply(this, arguments) : obj[methodname].apply(obj, Array.prototype.slice.call(arguments, 0, length - 1));
   };
-};
+}
 
-},{"./_isArray":20}],10:[function(require,module,exports){
-var _indexOf = require('./_indexOf');
-
-
-module.exports = function _contains(a, list) {
-  return _indexOf(list, a, 0) >= 0;
-};
-
-},{"./_indexOf":18}],11:[function(require,module,exports){
-var _isPlaceholder = require('./_isPlaceholder');
-
-
+module.exports = _checkForMethod;
+},{"./_isArray.js":21}],10:[function(require,module,exports){
+var _isPlaceholder =
+/*#__PURE__*/
+require("./_isPlaceholder.js");
 /**
  * Optimized internal one-arity curry function.
  *
@@ -309,7 +575,9 @@ var _isPlaceholder = require('./_isPlaceholder');
  * @param {Function} fn The function to curry.
  * @return {Function} The curried function.
  */
-module.exports = function _curry1(fn) {
+
+
+function _curry1(fn) {
   return function f1(a) {
     if (arguments.length === 0 || _isPlaceholder(a)) {
       return f1;
@@ -317,13 +585,17 @@ module.exports = function _curry1(fn) {
       return fn.apply(this, arguments);
     }
   };
-};
+}
 
-},{"./_isPlaceholder":22}],12:[function(require,module,exports){
-var _curry1 = require('./_curry1');
-var _isPlaceholder = require('./_isPlaceholder');
+module.exports = _curry1;
+},{"./_isPlaceholder.js":23}],11:[function(require,module,exports){
+var _curry1 =
+/*#__PURE__*/
+require("./_curry1.js");
 
-
+var _isPlaceholder =
+/*#__PURE__*/
+require("./_isPlaceholder.js");
 /**
  * Optimized internal two-arity curry function.
  *
@@ -332,29 +604,42 @@ var _isPlaceholder = require('./_isPlaceholder');
  * @param {Function} fn The function to curry.
  * @return {Function} The curried function.
  */
-module.exports = function _curry2(fn) {
+
+
+function _curry2(fn) {
   return function f2(a, b) {
     switch (arguments.length) {
       case 0:
         return f2;
+
       case 1:
-        return _isPlaceholder(a) ? f2
-             : _curry1(function(_b) { return fn(a, _b); });
+        return _isPlaceholder(a) ? f2 : _curry1(function (_b) {
+          return fn(a, _b);
+        });
+
       default:
-        return _isPlaceholder(a) && _isPlaceholder(b) ? f2
-             : _isPlaceholder(a) ? _curry1(function(_a) { return fn(_a, b); })
-             : _isPlaceholder(b) ? _curry1(function(_b) { return fn(a, _b); })
-             : fn(a, b);
+        return _isPlaceholder(a) && _isPlaceholder(b) ? f2 : _isPlaceholder(a) ? _curry1(function (_a) {
+          return fn(_a, b);
+        }) : _isPlaceholder(b) ? _curry1(function (_b) {
+          return fn(a, _b);
+        }) : fn(a, b);
     }
   };
-};
+}
 
-},{"./_curry1":11,"./_isPlaceholder":22}],13:[function(require,module,exports){
-var _curry1 = require('./_curry1');
-var _curry2 = require('./_curry2');
-var _isPlaceholder = require('./_isPlaceholder');
+module.exports = _curry2;
+},{"./_curry1.js":10,"./_isPlaceholder.js":23}],12:[function(require,module,exports){
+var _curry1 =
+/*#__PURE__*/
+require("./_curry1.js");
 
+var _curry2 =
+/*#__PURE__*/
+require("./_curry2.js");
 
+var _isPlaceholder =
+/*#__PURE__*/
+require("./_isPlaceholder.js");
 /**
  * Optimized internal three-arity curry function.
  *
@@ -363,37 +648,55 @@ var _isPlaceholder = require('./_isPlaceholder');
  * @param {Function} fn The function to curry.
  * @return {Function} The curried function.
  */
-module.exports = function _curry3(fn) {
+
+
+function _curry3(fn) {
   return function f3(a, b, c) {
     switch (arguments.length) {
       case 0:
         return f3;
+
       case 1:
-        return _isPlaceholder(a) ? f3
-             : _curry2(function(_b, _c) { return fn(a, _b, _c); });
+        return _isPlaceholder(a) ? f3 : _curry2(function (_b, _c) {
+          return fn(a, _b, _c);
+        });
+
       case 2:
-        return _isPlaceholder(a) && _isPlaceholder(b) ? f3
-             : _isPlaceholder(a) ? _curry2(function(_a, _c) { return fn(_a, b, _c); })
-             : _isPlaceholder(b) ? _curry2(function(_b, _c) { return fn(a, _b, _c); })
-             : _curry1(function(_c) { return fn(a, b, _c); });
+        return _isPlaceholder(a) && _isPlaceholder(b) ? f3 : _isPlaceholder(a) ? _curry2(function (_a, _c) {
+          return fn(_a, b, _c);
+        }) : _isPlaceholder(b) ? _curry2(function (_b, _c) {
+          return fn(a, _b, _c);
+        }) : _curry1(function (_c) {
+          return fn(a, b, _c);
+        });
+
       default:
-        return _isPlaceholder(a) && _isPlaceholder(b) && _isPlaceholder(c) ? f3
-             : _isPlaceholder(a) && _isPlaceholder(b) ? _curry2(function(_a, _b) { return fn(_a, _b, c); })
-             : _isPlaceholder(a) && _isPlaceholder(c) ? _curry2(function(_a, _c) { return fn(_a, b, _c); })
-             : _isPlaceholder(b) && _isPlaceholder(c) ? _curry2(function(_b, _c) { return fn(a, _b, _c); })
-             : _isPlaceholder(a) ? _curry1(function(_a) { return fn(_a, b, c); })
-             : _isPlaceholder(b) ? _curry1(function(_b) { return fn(a, _b, c); })
-             : _isPlaceholder(c) ? _curry1(function(_c) { return fn(a, b, _c); })
-             : fn(a, b, c);
+        return _isPlaceholder(a) && _isPlaceholder(b) && _isPlaceholder(c) ? f3 : _isPlaceholder(a) && _isPlaceholder(b) ? _curry2(function (_a, _b) {
+          return fn(_a, _b, c);
+        }) : _isPlaceholder(a) && _isPlaceholder(c) ? _curry2(function (_a, _c) {
+          return fn(_a, b, _c);
+        }) : _isPlaceholder(b) && _isPlaceholder(c) ? _curry2(function (_b, _c) {
+          return fn(a, _b, _c);
+        }) : _isPlaceholder(a) ? _curry1(function (_a) {
+          return fn(_a, b, c);
+        }) : _isPlaceholder(b) ? _curry1(function (_b) {
+          return fn(a, _b, c);
+        }) : _isPlaceholder(c) ? _curry1(function (_c) {
+          return fn(a, b, _c);
+        }) : fn(a, b, c);
     }
   };
-};
+}
 
-},{"./_curry1":11,"./_curry2":12,"./_isPlaceholder":22}],14:[function(require,module,exports){
-var _arity = require('./_arity');
-var _isPlaceholder = require('./_isPlaceholder');
+module.exports = _curry3;
+},{"./_curry1.js":10,"./_curry2.js":11,"./_isPlaceholder.js":23}],13:[function(require,module,exports){
+var _arity =
+/*#__PURE__*/
+require("./_arity.js");
 
-
+var _isPlaceholder =
+/*#__PURE__*/
+require("./_isPlaceholder.js");
 /**
  * Internal curryN function.
  *
@@ -404,104 +707,184 @@ var _isPlaceholder = require('./_isPlaceholder');
  * @param {Function} fn The function to curry.
  * @return {Function} The curried function.
  */
-module.exports = function _curryN(length, received, fn) {
-  return function() {
+
+
+function _curryN(length, received, fn) {
+  return function () {
     var combined = [];
     var argsIdx = 0;
     var left = length;
     var combinedIdx = 0;
+
     while (combinedIdx < received.length || argsIdx < arguments.length) {
       var result;
-      if (combinedIdx < received.length &&
-          (!_isPlaceholder(received[combinedIdx]) ||
-           argsIdx >= arguments.length)) {
+
+      if (combinedIdx < received.length && (!_isPlaceholder(received[combinedIdx]) || argsIdx >= arguments.length)) {
         result = received[combinedIdx];
       } else {
         result = arguments[argsIdx];
         argsIdx += 1;
       }
+
       combined[combinedIdx] = result;
+
       if (!_isPlaceholder(result)) {
         left -= 1;
       }
+
       combinedIdx += 1;
     }
-    return left <= 0 ? fn.apply(this, combined)
-                     : _arity(left, _curryN(length, combined, fn));
+
+    return left <= 0 ? fn.apply(this, combined) : _arity(left, _curryN(length, combined, fn));
   };
-};
+}
 
-},{"./_arity":7,"./_isPlaceholder":22}],15:[function(require,module,exports){
-var _arrayFromIterator = require('./_arrayFromIterator');
-var _functionName = require('./_functionName');
-var _has = require('./_has');
-var identical = require('../identical');
-var keys = require('../keys');
-var type = require('../type');
+module.exports = _curryN;
+},{"./_arity.js":7,"./_isPlaceholder.js":23}],14:[function(require,module,exports){
+var _arrayFromIterator =
+/*#__PURE__*/
+require("./_arrayFromIterator.js");
+
+var _includesWith =
+/*#__PURE__*/
+require("./_includesWith.js");
+
+var _functionName =
+/*#__PURE__*/
+require("./_functionName.js");
+
+var _has =
+/*#__PURE__*/
+require("./_has.js");
+
+var _objectIs =
+/*#__PURE__*/
+require("./_objectIs.js");
+
+var keys =
+/*#__PURE__*/
+require("../keys.js");
+
+var type =
+/*#__PURE__*/
+require("../type.js");
+/**
+ * private _uniqContentEquals function.
+ * That function is checking equality of 2 iterator contents with 2 assumptions
+ * - iterators lengths are the same
+ * - iterators values are unique
+ *
+ * false-positive result will be returned for comparison of, e.g.
+ * - [1,2,3] and [1,2,3,4]
+ * - [1,1,1] and [1,2,3]
+ * */
 
 
-module.exports = function _equals(a, b, stackA, stackB) {
-  if (identical(a, b)) {
+function _uniqContentEquals(aIterator, bIterator, stackA, stackB) {
+  var a = _arrayFromIterator(aIterator);
+
+  var b = _arrayFromIterator(bIterator);
+
+  function eq(_a, _b) {
+    return _equals(_a, _b, stackA.slice(), stackB.slice());
+  } // if *a* array contains any element that is not included in *b*
+
+
+  return !_includesWith(function (b, aItem) {
+    return !_includesWith(eq, aItem, b);
+  }, b, a);
+}
+
+function _equals(a, b, stackA, stackB) {
+  if (_objectIs(a, b)) {
     return true;
   }
 
-  if (type(a) !== type(b)) {
-    return false;
-  }
+  var typeA = type(a);
 
-  if (a == null || b == null) {
+  if (typeA !== type(b)) {
     return false;
   }
 
   if (typeof a['fantasy-land/equals'] === 'function' || typeof b['fantasy-land/equals'] === 'function') {
-    return typeof a['fantasy-land/equals'] === 'function' && a['fantasy-land/equals'](b) &&
-           typeof b['fantasy-land/equals'] === 'function' && b['fantasy-land/equals'](a);
+    return typeof a['fantasy-land/equals'] === 'function' && a['fantasy-land/equals'](b) && typeof b['fantasy-land/equals'] === 'function' && b['fantasy-land/equals'](a);
   }
 
   if (typeof a.equals === 'function' || typeof b.equals === 'function') {
-    return typeof a.equals === 'function' && a.equals(b) &&
-           typeof b.equals === 'function' && b.equals(a);
+    return typeof a.equals === 'function' && a.equals(b) && typeof b.equals === 'function' && b.equals(a);
   }
 
-  switch (type(a)) {
+  switch (typeA) {
     case 'Arguments':
     case 'Array':
     case 'Object':
-      if (typeof a.constructor === 'function' &&
-          _functionName(a.constructor) === 'Promise') {
+      if (typeof a.constructor === 'function' && _functionName(a.constructor) === 'Promise') {
         return a === b;
       }
+
       break;
+
     case 'Boolean':
     case 'Number':
     case 'String':
-      if (!(typeof a === typeof b && identical(a.valueOf(), b.valueOf()))) {
+      if (!(typeof a === typeof b && _objectIs(a.valueOf(), b.valueOf()))) {
         return false;
       }
+
       break;
+
     case 'Date':
-      if (!identical(a.valueOf(), b.valueOf())) {
+      if (!_objectIs(a.valueOf(), b.valueOf())) {
         return false;
       }
+
       break;
+
     case 'Error':
       return a.name === b.name && a.message === b.message;
+
     case 'RegExp':
-      if (!(a.source === b.source &&
-            a.global === b.global &&
-            a.ignoreCase === b.ignoreCase &&
-            a.multiline === b.multiline &&
-            a.sticky === b.sticky &&
-            a.unicode === b.unicode)) {
+      if (!(a.source === b.source && a.global === b.global && a.ignoreCase === b.ignoreCase && a.multiline === b.multiline && a.sticky === b.sticky && a.unicode === b.unicode)) {
         return false;
       }
+
       break;
+  }
+
+  var idx = stackA.length - 1;
+
+  while (idx >= 0) {
+    if (stackA[idx] === a) {
+      return stackB[idx] === b;
+    }
+
+    idx -= 1;
+  }
+
+  switch (typeA) {
     case 'Map':
-    case 'Set':
-      if (!_equals(_arrayFromIterator(a.entries()), _arrayFromIterator(b.entries()), stackA, stackB)) {
+      if (a.size !== b.size) {
         return false;
       }
-      break;
+
+      return _uniqContentEquals(a.entries(), b.entries(), stackA.concat([a]), stackB.concat([b]));
+
+    case 'Set':
+      if (a.size !== b.size) {
+        return false;
+      }
+
+      return _uniqContentEquals(a.values(), b.values(), stackA.concat([a]), stackB.concat([b]));
+
+    case 'Arguments':
+    case 'Array':
+    case 'Object':
+    case 'Boolean':
+    case 'Number':
+    case 'String':
+    case 'Date':
+    case 'Error':
+    case 'RegExp':
     case 'Int8Array':
     case 'Uint8Array':
     case 'Uint8ClampedArray':
@@ -511,90 +894,124 @@ module.exports = function _equals(a, b, stackA, stackB) {
     case 'Uint32Array':
     case 'Float32Array':
     case 'Float64Array':
-      break;
     case 'ArrayBuffer':
       break;
+
     default:
       // Values of other types are only equal if identical.
       return false;
   }
 
   var keysA = keys(a);
+
   if (keysA.length !== keys(b).length) {
     return false;
   }
 
-  var idx = stackA.length - 1;
-  while (idx >= 0) {
-    if (stackA[idx] === a) {
-      return stackB[idx] === b;
-    }
-    idx -= 1;
-  }
-
-  stackA.push(a);
-  stackB.push(b);
+  var extendedStackA = stackA.concat([a]);
+  var extendedStackB = stackB.concat([b]);
   idx = keysA.length - 1;
+
   while (idx >= 0) {
     var key = keysA[idx];
-    if (!(_has(key, b) && _equals(b[key], a[key], stackA, stackB))) {
+
+    if (!(_has(key, b) && _equals(b[key], a[key], extendedStackA, extendedStackB))) {
       return false;
     }
+
     idx -= 1;
   }
-  stackA.pop();
-  stackB.pop();
-  return true;
-};
 
-},{"../identical":6,"../keys":27,"../type":33,"./_arrayFromIterator":8,"./_functionName":16,"./_has":17}],16:[function(require,module,exports){
-module.exports = function _functionName(f) {
+  return true;
+}
+
+module.exports = _equals;
+},{"../keys.js":29,"../type.js":35,"./_arrayFromIterator.js":8,"./_functionName.js":15,"./_has.js":16,"./_includesWith.js":18,"./_objectIs.js":25}],15:[function(require,module,exports){
+function _functionName(f) {
   // String(x => x) evaluates to "x => x", so the pattern may not match.
   var match = String(f).match(/^function (\w*)/);
   return match == null ? '' : match[1];
-};
+}
 
-},{}],17:[function(require,module,exports){
-module.exports = function _has(prop, obj) {
+module.exports = _functionName;
+},{}],16:[function(require,module,exports){
+function _has(prop, obj) {
   return Object.prototype.hasOwnProperty.call(obj, prop);
-};
+}
 
-},{}],18:[function(require,module,exports){
-var equals = require('../equals');
+module.exports = _has;
+},{}],17:[function(require,module,exports){
+var _indexOf =
+/*#__PURE__*/
+require("./_indexOf.js");
 
+function _includes(a, list) {
+  return _indexOf(list, a, 0) >= 0;
+}
 
-module.exports = function _indexOf(list, a, idx) {
-  var inf, item;
-  // Array.prototype.indexOf doesn't exist below IE9
+module.exports = _includes;
+},{"./_indexOf.js":19}],18:[function(require,module,exports){
+function _includesWith(pred, x, list) {
+  var idx = 0;
+  var len = list.length;
+
+  while (idx < len) {
+    if (pred(x, list[idx])) {
+      return true;
+    }
+
+    idx += 1;
+  }
+
+  return false;
+}
+
+module.exports = _includesWith;
+},{}],19:[function(require,module,exports){
+var equals =
+/*#__PURE__*/
+require("../equals.js");
+
+function _indexOf(list, a, idx) {
+  var inf, item; // Array.prototype.indexOf doesn't exist below IE9
+
   if (typeof list.indexOf === 'function') {
     switch (typeof a) {
       case 'number':
         if (a === 0) {
           // manually crawl the list to distinguish between +0 and -0
           inf = 1 / a;
+
           while (idx < list.length) {
             item = list[idx];
+
             if (item === 0 && 1 / item === inf) {
               return idx;
             }
+
             idx += 1;
           }
+
           return -1;
         } else if (a !== a) {
           // NaN
           while (idx < list.length) {
             item = list[idx];
+
             if (typeof item === 'number' && item !== item) {
               return idx;
             }
+
             idx += 1;
           }
-          return -1;
-        }
-        // non-zero numbers can utilise Set
-        return list.indexOf(a, idx);
 
+          return -1;
+        } // non-zero numbers can utilise Set
+
+
+        return list.indexOf(a, idx);
       // all these types can utilise Set
+
       case 'string':
       case 'boolean':
       case 'function':
@@ -606,30 +1023,42 @@ module.exports = function _indexOf(list, a, idx) {
           // null can utilise Set
           return list.indexOf(a, idx);
         }
+
     }
-  }
-  // anything else not covered above, defer to R.equals
+  } // anything else not covered above, defer to R.equals
+
+
   while (idx < list.length) {
     if (equals(list[idx], a)) {
       return idx;
     }
+
     idx += 1;
   }
+
   return -1;
-};
+}
 
-},{"../equals":5}],19:[function(require,module,exports){
-var _has = require('./_has');
+module.exports = _indexOf;
+},{"../equals.js":5}],20:[function(require,module,exports){
+var _has =
+/*#__PURE__*/
+require("./_has.js");
 
+var toString = Object.prototype.toString;
 
-module.exports = (function() {
-  var toString = Object.prototype.toString;
-  return toString.call(arguments) === '[object Arguments]' ?
-    function _isArguments(x) { return toString.call(x) === '[object Arguments]'; } :
-    function _isArguments(x) { return _has('callee', x); };
-}());
+var _isArguments =
+/*#__PURE__*/
+function () {
+  return toString.call(arguments) === '[object Arguments]' ? function _isArguments(x) {
+    return toString.call(x) === '[object Arguments]';
+  } : function _isArguments(x) {
+    return _has('callee', x);
+  };
+}();
 
-},{"./_has":17}],20:[function(require,module,exports){
+module.exports = _isArguments;
+},{"./_has.js":16}],21:[function(require,module,exports){
 /**
  * Tests whether or not an object is an array.
  *
@@ -643,17 +1072,20 @@ module.exports = (function() {
  *      _isArray({}); //=> false
  */
 module.exports = Array.isArray || function _isArray(val) {
-  return (val != null &&
-          val.length >= 0 &&
-          Object.prototype.toString.call(val) === '[object Array]');
+  return val != null && val.length >= 0 && Object.prototype.toString.call(val) === '[object Array]';
 };
+},{}],22:[function(require,module,exports){
+var _curry1 =
+/*#__PURE__*/
+require("./_curry1.js");
 
-},{}],21:[function(require,module,exports){
-var _curry1 = require('./_curry1');
-var _isArray = require('./_isArray');
-var _isString = require('./_isString');
+var _isArray =
+/*#__PURE__*/
+require("./_isArray.js");
 
-
+var _isString =
+/*#__PURE__*/
+require("./_isString.js");
 /**
  * Tests whether or not an object is similar to an array.
  *
@@ -670,124 +1102,229 @@ var _isString = require('./_isString');
  *      _isArrayLike({}); //=> false
  *      _isArrayLike({length: 10}); //=> false
  *      _isArrayLike({0: 'zero', 9: 'nine', length: 10}); //=> true
+ *      _isArrayLike({nodeType: 1, length: 1}) // => false
  */
-module.exports = _curry1(function isArrayLike(x) {
-  if (_isArray(x)) { return true; }
-  if (!x) { return false; }
-  if (typeof x !== 'object') { return false; }
-  if (_isString(x)) { return false; }
-  if (x.nodeType === 1) { return !!x.length; }
-  if (x.length === 0) { return true; }
+
+
+var _isArrayLike =
+/*#__PURE__*/
+_curry1(function isArrayLike(x) {
+  if (_isArray(x)) {
+    return true;
+  }
+
+  if (!x) {
+    return false;
+  }
+
+  if (typeof x !== 'object') {
+    return false;
+  }
+
+  if (_isString(x)) {
+    return false;
+  }
+
+  if (x.length === 0) {
+    return true;
+  }
+
   if (x.length > 0) {
     return x.hasOwnProperty(0) && x.hasOwnProperty(x.length - 1);
   }
+
   return false;
 });
 
-},{"./_curry1":11,"./_isArray":20,"./_isString":23}],22:[function(require,module,exports){
-module.exports = function _isPlaceholder(a) {
-  return a != null &&
-         typeof a === 'object' &&
-         a['@@functional/placeholder'] === true;
-};
+module.exports = _isArrayLike;
+},{"./_curry1.js":10,"./_isArray.js":21,"./_isString.js":24}],23:[function(require,module,exports){
+function _isPlaceholder(a) {
+  return a != null && typeof a === 'object' && a['@@functional/placeholder'] === true;
+}
 
-},{}],23:[function(require,module,exports){
-module.exports = function _isString(x) {
-  return Object.prototype.toString.call(x) === '[object String]';
-};
-
+module.exports = _isPlaceholder;
 },{}],24:[function(require,module,exports){
-module.exports = function _pipe(f, g) {
-  return function() {
+function _isString(x) {
+  return Object.prototype.toString.call(x) === '[object String]';
+}
+
+module.exports = _isString;
+},{}],25:[function(require,module,exports){
+// Based on https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/is
+function _objectIs(a, b) {
+  // SameValue algorithm
+  if (a === b) {
+    // Steps 1-5, 7-10
+    // Steps 6.b-6.e: +0 != -0
+    return a !== 0 || 1 / a === 1 / b;
+  } else {
+    // Step 6.a: NaN == NaN
+    return a !== a && b !== b;
+  }
+}
+
+module.exports = typeof Object.is === 'function' ? Object.is : _objectIs;
+},{}],26:[function(require,module,exports){
+function _pipe(f, g) {
+  return function () {
     return g.call(this, f.apply(this, arguments));
   };
-};
+}
 
-},{}],25:[function(require,module,exports){
-var _isArrayLike = require('./_isArrayLike');
-var _xwrap = require('./_xwrap');
-var bind = require('../bind');
+module.exports = _pipe;
+},{}],27:[function(require,module,exports){
+var _isArrayLike =
+/*#__PURE__*/
+require("./_isArrayLike.js");
 
+var _xwrap =
+/*#__PURE__*/
+require("./_xwrap.js");
 
-module.exports = (function() {
-  function _arrayReduce(xf, acc, list) {
-    var idx = 0;
-    var len = list.length;
-    while (idx < len) {
-      acc = xf['@@transducer/step'](acc, list[idx]);
-      if (acc && acc['@@transducer/reduced']) {
-        acc = acc['@@transducer/value'];
-        break;
-      }
-      idx += 1;
+var bind =
+/*#__PURE__*/
+require("../bind.js");
+
+function _arrayReduce(xf, acc, list) {
+  var idx = 0;
+  var len = list.length;
+
+  while (idx < len) {
+    acc = xf['@@transducer/step'](acc, list[idx]);
+
+    if (acc && acc['@@transducer/reduced']) {
+      acc = acc['@@transducer/value'];
+      break;
     }
-    return xf['@@transducer/result'](acc);
+
+    idx += 1;
   }
 
-  function _iterableReduce(xf, acc, iter) {
-    var step = iter.next();
-    while (!step.done) {
-      acc = xf['@@transducer/step'](acc, step.value);
-      if (acc && acc['@@transducer/reduced']) {
-        acc = acc['@@transducer/value'];
-        break;
-      }
-      step = iter.next();
+  return xf['@@transducer/result'](acc);
+}
+
+function _iterableReduce(xf, acc, iter) {
+  var step = iter.next();
+
+  while (!step.done) {
+    acc = xf['@@transducer/step'](acc, step.value);
+
+    if (acc && acc['@@transducer/reduced']) {
+      acc = acc['@@transducer/value'];
+      break;
     }
-    return xf['@@transducer/result'](acc);
+
+    step = iter.next();
   }
 
-  function _methodReduce(xf, acc, obj, methodName) {
-    return xf['@@transducer/result'](obj[methodName](bind(xf['@@transducer/step'], xf), acc));
+  return xf['@@transducer/result'](acc);
+}
+
+function _methodReduce(xf, acc, obj, methodName) {
+  return xf['@@transducer/result'](obj[methodName](bind(xf['@@transducer/step'], xf), acc));
+}
+
+var symIterator = typeof Symbol !== 'undefined' ? Symbol.iterator : '@@iterator';
+
+function _reduce(fn, acc, list) {
+  if (typeof fn === 'function') {
+    fn = _xwrap(fn);
   }
 
-  var symIterator = (typeof Symbol !== 'undefined') ? Symbol.iterator : '@@iterator';
-  return function _reduce(fn, acc, list) {
-    if (typeof fn === 'function') {
-      fn = _xwrap(fn);
-    }
-    if (_isArrayLike(list)) {
-      return _arrayReduce(fn, acc, list);
-    }
-    if (typeof list['fantasy-land/reduce'] === 'function') {
-      return _methodReduce(fn, acc, list, 'fantasy-land/reduce');
-    }
-    if (list[symIterator] != null) {
-      return _iterableReduce(fn, acc, list[symIterator]());
-    }
-    if (typeof list.next === 'function') {
-      return _iterableReduce(fn, acc, list);
-    }
-    if (typeof list.reduce === 'function') {
-      return _methodReduce(fn, acc, list, 'reduce');
-    }
+  if (_isArrayLike(list)) {
+    return _arrayReduce(fn, acc, list);
+  }
 
-    throw new TypeError('reduce: list must be array or iterable');
-  };
-}());
+  if (typeof list['fantasy-land/reduce'] === 'function') {
+    return _methodReduce(fn, acc, list, 'fantasy-land/reduce');
+  }
 
-},{"../bind":1,"./_isArrayLike":21,"./_xwrap":26}],26:[function(require,module,exports){
-module.exports = (function() {
+  if (list[symIterator] != null) {
+    return _iterableReduce(fn, acc, list[symIterator]());
+  }
+
+  if (typeof list.next === 'function') {
+    return _iterableReduce(fn, acc, list);
+  }
+
+  if (typeof list.reduce === 'function') {
+    return _methodReduce(fn, acc, list, 'reduce');
+  }
+
+  throw new TypeError('reduce: list must be array or iterable');
+}
+
+module.exports = _reduce;
+},{"../bind.js":1,"./_isArrayLike.js":22,"./_xwrap.js":28}],28:[function(require,module,exports){
+var XWrap =
+/*#__PURE__*/
+function () {
   function XWrap(fn) {
     this.f = fn;
   }
-  XWrap.prototype['@@transducer/init'] = function() {
+
+  XWrap.prototype['@@transducer/init'] = function () {
     throw new Error('init not implemented on XWrap');
   };
-  XWrap.prototype['@@transducer/result'] = function(acc) { return acc; };
-  XWrap.prototype['@@transducer/step'] = function(acc, x) {
+
+  XWrap.prototype['@@transducer/result'] = function (acc) {
+    return acc;
+  };
+
+  XWrap.prototype['@@transducer/step'] = function (acc, x) {
     return this.f(acc, x);
   };
 
-  return function _xwrap(fn) { return new XWrap(fn); };
-}());
+  return XWrap;
+}();
 
-},{}],27:[function(require,module,exports){
-var _curry1 = require('./internal/_curry1');
-var _has = require('./internal/_has');
-var _isArguments = require('./internal/_isArguments');
+function _xwrap(fn) {
+  return new XWrap(fn);
+}
+
+module.exports = _xwrap;
+},{}],29:[function(require,module,exports){
+var _curry1 =
+/*#__PURE__*/
+require("./internal/_curry1.js");
+
+var _has =
+/*#__PURE__*/
+require("./internal/_has.js");
+
+var _isArguments =
+/*#__PURE__*/
+require("./internal/_isArguments.js"); // cover IE < 9 keys issues
 
 
+var hasEnumBug = !
+/*#__PURE__*/
+{
+  toString: null
+}.propertyIsEnumerable('toString');
+var nonEnumerableProps = ['constructor', 'valueOf', 'isPrototypeOf', 'toString', 'propertyIsEnumerable', 'hasOwnProperty', 'toLocaleString']; // Safari bug
+
+var hasArgsEnumBug =
+/*#__PURE__*/
+function () {
+  'use strict';
+
+  return arguments.propertyIsEnumerable('length');
+}();
+
+var contains = function contains(list, item) {
+  var idx = 0;
+
+  while (idx < list.length) {
+    if (list[idx] === item) {
+      return true;
+    }
+
+    idx += 1;
+  }
+
+  return false;
+};
 /**
  * Returns a list containing the names of all the enumerable own properties of
  * the supplied object.
@@ -801,73 +1338,71 @@ var _isArguments = require('./internal/_isArguments');
  * @sig {k: v} -> [k]
  * @param {Object} obj The object to extract properties from
  * @return {Array} An array of the object's own properties.
- * @see R.keysIn, R.values
+ * @see R.keysIn, R.values, R.toPairs
  * @example
  *
  *      R.keys({a: 1, b: 2, c: 3}); //=> ['a', 'b', 'c']
  */
-module.exports = (function() {
-  // cover IE < 9 keys issues
-  var hasEnumBug = !({toString: null}).propertyIsEnumerable('toString');
-  var nonEnumerableProps = ['constructor', 'valueOf', 'isPrototypeOf', 'toString',
-                            'propertyIsEnumerable', 'hasOwnProperty', 'toLocaleString'];
-  // Safari bug
-  var hasArgsEnumBug = (function() {
-    'use strict';
-    return arguments.propertyIsEnumerable('length');
-  }());
 
-  var contains = function contains(list, item) {
-    var idx = 0;
-    while (idx < list.length) {
-      if (list[idx] === item) {
-        return true;
-      }
-      idx += 1;
+
+var keys = typeof Object.keys === 'function' && !hasArgsEnumBug ?
+/*#__PURE__*/
+_curry1(function keys(obj) {
+  return Object(obj) !== obj ? [] : Object.keys(obj);
+}) :
+/*#__PURE__*/
+_curry1(function keys(obj) {
+  if (Object(obj) !== obj) {
+    return [];
+  }
+
+  var prop, nIdx;
+  var ks = [];
+
+  var checkArgsLength = hasArgsEnumBug && _isArguments(obj);
+
+  for (prop in obj) {
+    if (_has(prop, obj) && (!checkArgsLength || prop !== 'length')) {
+      ks[ks.length] = prop;
     }
-    return false;
-  };
+  }
 
-  return typeof Object.keys === 'function' && !hasArgsEnumBug ?
-    _curry1(function keys(obj) {
-      return Object(obj) !== obj ? [] : Object.keys(obj);
-    }) :
-    _curry1(function keys(obj) {
-      if (Object(obj) !== obj) {
-        return [];
+  if (hasEnumBug) {
+    nIdx = nonEnumerableProps.length - 1;
+
+    while (nIdx >= 0) {
+      prop = nonEnumerableProps[nIdx];
+
+      if (_has(prop, obj) && !contains(ks, prop)) {
+        ks[ks.length] = prop;
       }
-      var prop, nIdx;
-      var ks = [];
-      var checkArgsLength = hasArgsEnumBug && _isArguments(obj);
-      for (prop in obj) {
-        if (_has(prop, obj) && (!checkArgsLength || prop !== 'length')) {
-          ks[ks.length] = prop;
-        }
-      }
-      if (hasEnumBug) {
-        nIdx = nonEnumerableProps.length - 1;
-        while (nIdx >= 0) {
-          prop = nonEnumerableProps[nIdx];
-          if (_has(prop, obj) && !contains(ks, prop)) {
-            ks[ks.length] = prop;
-          }
-          nIdx -= 1;
-        }
-      }
-      return ks;
-    });
-}());
 
-},{"./internal/_curry1":11,"./internal/_has":17,"./internal/_isArguments":19}],28:[function(require,module,exports){
-var _arity = require('./internal/_arity');
-var _pipe = require('./internal/_pipe');
-var reduce = require('./reduce');
-var tail = require('./tail');
+      nIdx -= 1;
+    }
+  }
 
+  return ks;
+});
+module.exports = keys;
+},{"./internal/_curry1.js":10,"./internal/_has.js":16,"./internal/_isArguments.js":20}],30:[function(require,module,exports){
+var _arity =
+/*#__PURE__*/
+require("./internal/_arity.js");
 
+var _pipe =
+/*#__PURE__*/
+require("./internal/_pipe.js");
+
+var reduce =
+/*#__PURE__*/
+require("./reduce.js");
+
+var tail =
+/*#__PURE__*/
+require("./tail.js");
 /**
- * Performs left-to-right function composition. The leftmost function may have
- * any arity; the remaining functions must be unary.
+ * Performs left-to-right function composition. The first argument may have
+ * any arity; the remaining arguments must be unary.
  *
  * In some libraries this function is named `sequence`.
  *
@@ -883,24 +1418,31 @@ var tail = require('./tail');
  * @see R.compose
  * @example
  *
- *      var f = R.pipe(Math.pow, R.negate, R.inc);
+ *      const f = R.pipe(Math.pow, R.negate, R.inc);
  *
  *      f(3, 4); // -(3^4) + 1
  * @symb R.pipe(f, g, h)(a, b) = h(g(f(a, b)))
+ * @symb R.pipe(f, g, h)(a)(b) = h(g(f(a)))(b)
  */
-module.exports = function pipe() {
+
+
+function pipe() {
   if (arguments.length === 0) {
     throw new Error('pipe requires at least one argument');
   }
-  return _arity(arguments[0].length,
-                reduce(_pipe, arguments[0], tail(arguments)));
-};
 
-},{"./internal/_arity":7,"./internal/_pipe":24,"./reduce":29,"./tail":32}],29:[function(require,module,exports){
-var _curry3 = require('./internal/_curry3');
-var _reduce = require('./internal/_reduce');
+  return _arity(arguments[0].length, reduce(_pipe, arguments[0], tail(arguments)));
+}
 
+module.exports = pipe;
+},{"./internal/_arity.js":7,"./internal/_pipe.js":26,"./reduce.js":31,"./tail.js":34}],31:[function(require,module,exports){
+var _curry3 =
+/*#__PURE__*/
+require("./internal/_curry3.js");
 
+var _reduce =
+/*#__PURE__*/
+require("./internal/_reduce.js");
 /**
  * Returns a single item by iterating through the list, successively calling
  * the iterator function and passing it an accumulator value and the current
@@ -935,25 +1477,33 @@ var _reduce = require('./internal/_reduce');
  * @example
  *
  *      R.reduce(R.subtract, 0, [1, 2, 3, 4]) // => ((((0 - 1) - 2) - 3) - 4) = -10
- *                -               -10
- *               / \              / \
- *              -   4           -6   4
- *             / \              / \
- *            -   3   ==>     -3   3
- *           / \              / \
- *          -   2           -1   2
- *         / \              / \
- *        0   1            0   1
+ *      //          -               -10
+ *      //         / \              / \
+ *      //        -   4           -6   4
+ *      //       / \              / \
+ *      //      -   3   ==>     -3   3
+ *      //     / \              / \
+ *      //    -   2           -1   2
+ *      //   / \              / \
+ *      //  0   1            0   1
  *
  * @symb R.reduce(f, a, [b, c, d]) = f(f(f(a, b), c), d)
  */
-module.exports = _curry3(_reduce);
-
-},{"./internal/_curry3":13,"./internal/_reduce":25}],30:[function(require,module,exports){
-var _curry1 = require('./internal/_curry1');
-var _isString = require('./internal/_isString');
 
 
+var reduce =
+/*#__PURE__*/
+_curry3(_reduce);
+
+module.exports = reduce;
+},{"./internal/_curry3.js":12,"./internal/_reduce.js":27}],32:[function(require,module,exports){
+var _curry1 =
+/*#__PURE__*/
+require("./internal/_curry1.js");
+
+var _isString =
+/*#__PURE__*/
+require("./internal/_isString.js");
 /**
  * Returns a new list or string with the elements or characters in reverse
  * order.
@@ -978,16 +1528,23 @@ var _isString = require('./internal/_isString');
  *      R.reverse('a');        //=> 'a'
  *      R.reverse('');         //=> ''
  */
-module.exports = _curry1(function reverse(list) {
-  return _isString(list) ? list.split('').reverse().join('') :
-                           Array.prototype.slice.call(list, 0).reverse();
+
+
+var reverse =
+/*#__PURE__*/
+_curry1(function reverse(list) {
+  return _isString(list) ? list.split('').reverse().join('') : Array.prototype.slice.call(list, 0).reverse();
 });
 
-},{"./internal/_curry1":11,"./internal/_isString":23}],31:[function(require,module,exports){
-var _checkForMethod = require('./internal/_checkForMethod');
-var _curry3 = require('./internal/_curry3');
+module.exports = reverse;
+},{"./internal/_curry1.js":10,"./internal/_isString.js":24}],33:[function(require,module,exports){
+var _checkForMethod =
+/*#__PURE__*/
+require("./internal/_checkForMethod.js");
 
-
+var _curry3 =
+/*#__PURE__*/
+require("./internal/_curry3.js");
 /**
  * Returns the elements of the given list or string (or object with a `slice`
  * method) from `fromIndex` (inclusive) to `toIndex` (exclusive).
@@ -1012,16 +1569,29 @@ var _curry3 = require('./internal/_curry3');
  *      R.slice(-3, -1, ['a', 'b', 'c', 'd']);      //=> ['b', 'c']
  *      R.slice(0, 3, 'ramda');                     //=> 'ram'
  */
-module.exports = _curry3(_checkForMethod('slice', function slice(fromIndex, toIndex, list) {
+
+
+var slice =
+/*#__PURE__*/
+_curry3(
+/*#__PURE__*/
+_checkForMethod('slice', function slice(fromIndex, toIndex, list) {
   return Array.prototype.slice.call(list, fromIndex, toIndex);
 }));
 
-},{"./internal/_checkForMethod":9,"./internal/_curry3":13}],32:[function(require,module,exports){
-var _checkForMethod = require('./internal/_checkForMethod');
-var _curry1 = require('./internal/_curry1');
-var slice = require('./slice');
+module.exports = slice;
+},{"./internal/_checkForMethod.js":9,"./internal/_curry3.js":12}],34:[function(require,module,exports){
+var _checkForMethod =
+/*#__PURE__*/
+require("./internal/_checkForMethod.js");
 
+var _curry1 =
+/*#__PURE__*/
+require("./internal/_curry1.js");
 
+var slice =
+/*#__PURE__*/
+require("./slice.js");
 /**
  * Returns all but the first element of the given list or string (or object
  * with a `tail` method).
@@ -1049,12 +1619,21 @@ var slice = require('./slice');
  *      R.tail('a');    //=> ''
  *      R.tail('');     //=> ''
  */
-module.exports = _curry1(_checkForMethod('tail', slice(1, Infinity)));
-
-},{"./internal/_checkForMethod":9,"./internal/_curry1":11,"./slice":31}],33:[function(require,module,exports){
-var _curry1 = require('./internal/_curry1');
 
 
+var tail =
+/*#__PURE__*/
+_curry1(
+/*#__PURE__*/
+_checkForMethod('tail',
+/*#__PURE__*/
+slice(1, Infinity)));
+
+module.exports = tail;
+},{"./internal/_checkForMethod.js":9,"./internal/_curry1.js":10,"./slice.js":33}],35:[function(require,module,exports){
+var _curry1 =
+/*#__PURE__*/
+require("./internal/_curry1.js");
 /**
  * Gives a single-word string description of the (native) type of a value,
  * returning such answers as 'Object', 'Number', 'Array', or 'Null'. Does not
@@ -1078,14 +1657,18 @@ var _curry1 = require('./internal/_curry1');
  *      R.type([]); //=> "Array"
  *      R.type(/[A-z]/); //=> "RegExp"
  *      R.type(() => {}); //=> "Function"
+ *      R.type(undefined); //=> "Undefined"
  */
-module.exports = _curry1(function type(val) {
-  return val === null      ? 'Null'      :
-         val === undefined ? 'Undefined' :
-         Object.prototype.toString.call(val).slice(8, -1);
+
+
+var type =
+/*#__PURE__*/
+_curry1(function type(val) {
+  return val === null ? 'Null' : val === undefined ? 'Undefined' : Object.prototype.toString.call(val).slice(8, -1);
 });
 
-},{"./internal/_curry1":11}],34:[function(require,module,exports){
+module.exports = type;
+},{"./internal/_curry1.js":10}],36:[function(require,module,exports){
 var curryN = require('ramda/src/curryN');
 var compose = require('ramda/src/compose');
 var difference = require('ramda/src/difference');
@@ -1256,5 +1839,5 @@ Type.ListOf = function (T) {
 
 module.exports = Type;
 
-},{"ramda/src/compose":2,"ramda/src/curryN":3,"ramda/src/difference":4}]},{},[34])(34)
+},{"ramda/src/compose":2,"ramda/src/curryN":3,"ramda/src/difference":4}]},{},[36])(36)
 });
