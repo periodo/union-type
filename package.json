@@ -6,12 +6,12 @@
     "test": "test"
   },
   "dependencies": {
-    "ramda": "^0.28.0"
+    "ramda": "^0.32.0"
   },
   "devDependencies": {
-    "@babel/register": "^7.17.7",
-    "browserify": "^17.0.0",
-    "mocha": "^10.0.0"
+    "@babel/register": "^7.28.3",
+    "browserify": "^17.0.1",
+    "mocha": "^11.7.5"
   },
   "scripts": {
     "build": "browserify -s unionType ./union-type.js -o dist/union-type.js",
